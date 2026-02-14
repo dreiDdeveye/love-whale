@@ -278,6 +278,23 @@ nav { display: flex; align-items: center; gap: 4px; }
   height: 100px;
   background: linear-gradient(to top, var(--card-bg) 0%, rgba(255,255,255,0.4) 60%, transparent 100%);
 }
+.dcard-photo-info {
+  position: absolute; bottom: 16px; left: 20px; right: 20px;
+  z-index: 10;
+}
+.dcard-photo-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px; font-weight: 700;
+  color: var(--charcoal);
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 8px rgba(255,255,255,0.6);
+  line-height: 1;
+}
+.dcard-photo-age {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 24px;
+}
 .dcard-bg { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
 .dcard-bg-icon { position: absolute; bottom: 14px; right: 18px; opacity: 0.13; }
 .dcard-bg-icon svg { width: 70px; height: 70px; stroke-width: 1; }
@@ -519,7 +536,7 @@ nav { display: flex; align-items: center; gap: 4px; }
       <span class="val">$0.0042</span>
     </div>
     <div class="hdr-avatar" style="overflow:hidden;padding:0;">
-      <img src="https://picsum.photos/seed/whale-me/40/40" alt="My profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/>
+      <img src="634757140_1594921118216307_4431703257913029443_n.png" alt="My profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/>
     </div>
   </div>
 </header>
@@ -561,7 +578,7 @@ nav { display: flex; align-items: center; gap: 4px; }
       <div class="my-banner"><div class="my-banner-dots"></div></div>
       <div class="my-av-area">
         <div class="my-av">
-          <img src="https://picsum.photos/seed/whale-me/80/80" alt="My profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />
+          <img src="634757140_1594921118216307_4431703257913029443_n.png" alt="My profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />
         </div>
         <div class="my-online"></div>
       </div>
@@ -595,22 +612,22 @@ nav { display: flex; align-items: center; gap: 4px; }
       </div>
       <div class="match-list">
         <div class="m-item">
-          <div class="m-av"><img src="https://picsum.photos/seed/fox-degen/40/40" alt="FoxDegenXO" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+          <div class="m-av"><img src="630620418_1437712531225695_4483064244949154140_n.png" alt="FoxDegenXO" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
           <div class="m-info"><div class="m-name">FoxDegenXO</div><div class="m-sub">$FLOKI holder</div></div>
           <span class="m-ago">2m</span>
         </div>
         <div class="m-item">
-          <div class="m-av"><img src="https://picsum.photos/seed/pepe-hodlr/40/40" alt="PepeHodlr" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+          <div class="m-av"><img src="629867843_25826663980278222_43902955839152861_n.png" alt="PepeHodlr" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
           <div class="m-info"><div class="m-name">PepeHodlr</div><div class="m-sub">$PEPE diamond</div></div>
           <span class="m-ago">1h</span>
         </div>
         <div class="m-item">
-          <div class="m-av"><img src="https://picsum.photos/seed/moonshot99/40/40" alt="MoonShot99" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+          <div class="m-av"><img src="628232764_1941883763359601_5266791725679387119_n.png" alt="MoonShot99" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
           <div class="m-info"><div class="m-name">MoonShot99</div><div class="m-sub">$BONK enjoyer</div></div>
           <span class="m-ago">3h</span>
         </div>
         <div class="m-item">
-          <div class="m-av"><img src="https://picsum.photos/seed/doge-queen/40/40" alt="DogeQueen" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+          <div class="m-av"><img src="627713164_2980888118968472_9166057926714483845_n.png" alt="DogeQueen" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
           <div class="m-info"><div class="m-name">DogeQueen</div><div class="m-sub">$DOGE OG</div></div>
           <span class="m-ago">1d</span>
         </div>
@@ -637,8 +654,11 @@ nav { display: flex; align-items: center; gap: 4px; }
         <div class="hint hint-y" id="hy0">Match</div>
         <div class="hint hint-n" id="hn0">Pass</div>
         <div class="dcard-vis">
-          <img src="https://picsum.photos/seed/pepe-maximalist/480/280" alt="PepeMaximalist" class="dcard-photo" />
+          <img src="627644310_4391249524532456_2270475387538904170_n.png" alt="PepeMaximalist" class="dcard-photo" />
           <div class="dcard-photo-overlay"></div>
+          <div class="dcard-photo-info">
+            <div class="dcard-photo-name">PepeMaximalist<span class="dcard-photo-age">, 27</span></div>
+          </div>
           <div class="price-tag">
             <span>PEPE</span>
             <span class="u"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>44.1%</span>
@@ -673,8 +693,11 @@ nav { display: flex; align-items: center; gap: 4px; }
         <div class="hint hint-y" id="hy1">Match</div>
         <div class="hint hint-n" id="hn1">Pass</div>
         <div class="dcard-vis">
-          <img src="https://picsum.photos/seed/bonkboss-sol/480/280" alt="BonkBoss_Sol" class="dcard-photo" />
+          <img src="627227118_1343481877497654_896542719185624334_n.png" alt="BonkBoss_Sol" class="dcard-photo" />
           <div class="dcard-photo-overlay"></div>
+          <div class="dcard-photo-info">
+            <div class="dcard-photo-name">BonkBoss_Sol<span class="dcard-photo-age">, 24</span></div>
+          </div>
           <div class="price-tag">
             <span>BONK</span>
             <span class="u"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>12.5%</span>
@@ -709,8 +732,11 @@ nav { display: flex; align-items: center; gap: 4px; }
         <div class="hint hint-y" id="hy2">Match</div>
         <div class="hint hint-n" id="hn2">Pass</div>
         <div class="dcard-vis">
-          <img src="https://picsum.photos/seed/doge-queen-og/480/280" alt="DogeQueenOG" class="dcard-photo" />
+          <img src="617072142_1421929106054259_8235768988003589789_n.png" alt="DogeQueenOG" class="dcard-photo" />
           <div class="dcard-photo-overlay"></div>
+          <div class="dcard-photo-info">
+            <div class="dcard-photo-name">DogeQueenOG<span class="dcard-photo-age">, 31</span></div>
+          </div>
           <div class="price-tag">
             <span>DOGE</span>
             <span class="u"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>18.4%</span>
@@ -857,9 +883,9 @@ nav { display: flex; align-items: center; gap: 4px; }
     <div class="modal-h">It's a <em>Match</em></div>
     <div class="modal-sub">You and <strong id="mName">PepeMaximalist</strong> both swiped right.<br>Your portfolios are aligned.</div>
     <div class="modal-avs">
-      <div class="mav mav-you"><img src="https://picsum.photos/seed/whale-me/80/80" alt="You" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+      <div class="mav mav-you"><img src="634757140_1594921118216307_4431703257913029443_n.png" alt="You" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
       <div class="mav-mid"><svg viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-      <div class="mav mav-them" id="modalMatchAv"><img src="https://picsum.photos/seed/pepe-maximalist/80/80" alt="Match" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+      <div class="mav mav-them" id="modalMatchAv"><img src="627644310_4391249524532456_2270475387538904170_n.png" alt="Match" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
     </div>
     <div class="modal-coin">
       <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -902,9 +928,9 @@ setTimeout(()=>animRing(2,pct[2]),900);
 
 // Card data
 const cards=[
-  {id:'dc0',name:'PepeMaximalist',coin:'$PEPE',   seed:'pepe-maximalist'},
-  {id:'dc1',name:'BonkBoss_Sol',  coin:'$BONK',   seed:'bonkboss-sol'},
-  {id:'dc2',name:'DogeQueenOG',   coin:'$DOGE',   seed:'doge-queen-og'},
+  {id:'dc0',name:'PepeMaximalist',coin:'$PEPE',   img:'627644310_4391249524532456_2270475387538904170_n.png'},
+  {id:'dc1',name:'BonkBoss_Sol',  coin:'$BONK',   img:'627227118_1343481877497654_896542719185624334_n.png'},
+  {id:'dc2',name:'DogeQueenOG',   coin:'$DOGE',   img:'617072142_1421929106054259_8235768988003589789_n.png'},
 ];
 let cur=0;
 
@@ -947,7 +973,7 @@ function openModal(p){
   document.getElementById('mName').textContent=p.name;
   document.getElementById('mCoin').textContent=p.coin;
   const matchImg = document.querySelector('#modalMatchAv img');
-  if(matchImg) matchImg.src = `https://picsum.photos/seed/${p.seed}/80/80`;
+  if(matchImg) matchImg.src = p.img;
   document.getElementById('modalWrap').classList.add('open');
 }
 function closeModal(){
