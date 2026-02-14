@@ -227,100 +227,175 @@ nav.scrolled { padding: 12px 60px; box-shadow: 0 2px 20px rgba(200,68,90,0.06); 
 .proof-rating-text { font-size: 13px; color: var(--muted); }
 .proof-rating-text strong { color: var(--charcoal); }
 
-/* ─── CARD PREVIEW ─── */
-.card-preview {
+/* ─── CAROUSEL ─── */
+.carousel-section {
   position: relative; z-index: 5;
   padding: 0 24px 120px;
-  display: flex; justify-content: center;
-  animation: fade-up 0.9s 0.5s ease both;
-}
-
-.preview-frame {
-  position: relative; width: 100%; max-width: 860px;
-}
-
-.preview-shadow {
-  position: absolute; inset: -2px; border-radius: 26px;
-  background: linear-gradient(135deg, var(--rose), var(--wine), var(--gold));
-  padding: 2px; z-index: -1;
-}
-.preview-shadow-inner { background: white; border-radius: 24px; width: 100%; height: 100%; }
-
-.preview-img {
-  width: 100%; border-radius: 22px;
-  background: white;
-  border: 1px solid var(--border-md);
   overflow: hidden;
-  box-shadow: 0 32px 80px rgba(200,68,90,0.15), 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.carousel-container {
   position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Mini app mockup inside the preview */
-.mock-bar {
-  background: rgba(253,248,244,0.95);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 20px;
-  display: flex; align-items: center; justify-content: space-between;
+.carousel-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
 }
-.mock-logo { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 600; color: var(--charcoal); }
-.mock-logo em { color: var(--rose); font-style: italic; }
-.mock-nav { display: flex; gap: 6px; }
-.mock-nav-dot { width: 28px; height: 6px; border-radius: 3px; }
 
-.mock-body { display: grid; grid-template-columns: 200px 1fr; min-height: 380px; }
-.mock-sidebar { background: white; border-right: 1px solid var(--border); padding: 16px; }
-.mock-sidebar-profile {
-  height: 48px; border-radius: 10px;
-  background: linear-gradient(135deg, var(--rose), var(--wine));
-  margin-bottom: 10px; opacity: 0.9;
-}
-.mock-sidebar-items { display: flex; flex-direction: column; gap: 6px; }
-.mock-sidebar-item { height: 32px; border-radius: 7px; background: var(--petal); }
-.mock-sidebar-item.sm { height: 24px; width: 70%; background: rgba(200,68,90,0.07); }
-
-.mock-main { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
-.mock-card {
-  background: white; border: 1px solid var(--border); border-radius: 14px;
-  overflow: hidden; box-shadow: 0 4px 16px rgba(200,68,90,0.08);
-  flex: 1;
-}
-.mock-card-top { height: 110px; background: linear-gradient(135deg, #FDEDF1, #F2BFC9); position: relative; }
-.mock-card-top::after { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C8445A' fill-opacity='0.06'%3E%3Cpath d='M20 20.5C20 20.5 14.5 15 14.5 11.5C14.5 8.5 17 6 20 8C23 6 25.5 8.5 25.5 11.5C25.5 15 20 20.5 20 20.5Z'/%3E%3C/g%3E%3C/svg%3E") repeat; }
-.mock-card-body { padding: 10px 12px; }
-.mock-name-line { height: 12px; border-radius: 4px; background: var(--charcoal); width: 55%; margin-bottom: 5px; opacity: 0.7; }
-.mock-sub-line  { height: 8px; border-radius: 4px; background: var(--rose); width: 35%; margin-bottom: 8px; opacity: 0.5; }
-.mock-text-lines { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
-.mock-text-line { height: 7px; border-radius: 3px; background: rgba(154,120,128,0.2); }
-.mock-chips-row { display: flex; gap: 4px; }
-.mock-chip { height: 18px; border-radius: 4px; width: 40px; background: rgba(200,68,90,0.1); }
-
-.mock-actions { display: flex; justify-content: center; gap: 8px; padding: 10px; }
-.mock-btn { border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; }
-.mock-btn-nope  { width: 36px; height: 36px; background: white; border: 1.5px solid rgba(154,120,128,0.2); }
-.mock-btn-pump  { width: 44px; height: 44px; background: linear-gradient(135deg, var(--rose), var(--wine)); box-shadow: 0 4px 12px rgba(200,68,90,0.35); }
-.mock-btn-super { width: 36px; height: 36px; background: white; border: 1.5px solid rgba(201,169,110,0.3); }
-.mock-btn svg { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-
-/* Floating badges on preview */
-.preview-badge {
+.carousel-card {
   position: absolute;
-  background: white; border: 1px solid var(--border);
-  border-radius: 14px; padding: 10px 14px;
-  box-shadow: 0 8px 28px rgba(200,68,90,0.14);
-  display: flex; align-items: center; gap: 9px;
-  animation: float 3s ease-in-out infinite;
+  width: 380px;
+  height: 480px;
+  border-radius: 24px;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 20px 60px rgba(200,68,90,0.2);
+  cursor: pointer;
 }
-.pb-icon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.pb-icon svg { width: 16px; height: 16px; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.pb-text { font-size: 12px; }
-.pb-title { font-weight: 600; color: var(--charcoal); display: block; line-height: 1.2; }
-.pb-sub   { color: var(--muted); font-size: 11px; }
 
-.badge-match { top: -20px; right: -30px; animation-delay: 0s; }
-.badge-price { bottom: 40px; left: -30px; animation-delay: 1.2s; }
-.badge-compat { bottom: -20px; right: 60px; animation-delay: 0.6s; }
+.carousel-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.carousel-card-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
+}
+
+.carousel-card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.carousel-card-tag {
+  font-size: 14px;
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+}
+
+/* Card positions */
+.carousel-card[data-pos="center"] {
+  z-index: 5;
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  filter: brightness(1);
+}
+
+.carousel-card[data-pos="left"] {
+  z-index: 3;
+  transform: translateX(-420px) scale(0.85) rotateY(12deg);
+  opacity: 0.6;
+  filter: brightness(0.7);
+}
+
+.carousel-card[data-pos="right"] {
+  z-index: 3;
+  transform: translateX(420px) scale(0.85) rotateY(-12deg);
+  opacity: 0.6;
+  filter: brightness(0.7);
+}
+
+.carousel-card[data-pos="far-left"] {
+  z-index: 1;
+  transform: translateX(-760px) scale(0.7) rotateY(18deg);
+  opacity: 0.3;
+  filter: brightness(0.5);
+  pointer-events: none;
+}
+
+.carousel-card[data-pos="far-right"] {
+  z-index: 1;
+  transform: translateX(760px) scale(0.7) rotateY(-18deg);
+  opacity: 0.3;
+  filter: brightness(0.5);
+  pointer-events: none;
+}
+
+.carousel-card[data-pos="hidden"] {
+  opacity: 0;
+  transform: scale(0.5);
+  pointer-events: none;
+}
+
+/* Navigation */
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+  box-shadow: 0 4px 16px rgba(200,68,90,0.12);
+}
+
+.carousel-nav:hover {
+  background: var(--petal);
+  border-color: var(--rose);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-prev { left: 40px; }
+.carousel-next { right: 40px; }
+
+.carousel-nav svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--rose);
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.carousel-caption {
+  text-align: center;
+  margin-top: 60px;
+  animation: fade-up 0.9s 0.6s ease both;
+}
+
+.carousel-caption h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--charcoal);
+  margin-bottom: 8px;
+}
+
+.carousel-caption p {
+  font-size: 15px;
+  color: var(--muted);
+}
 
 /* ─── TICKER ─── */
 .ticker {
@@ -632,17 +707,8 @@ footer {
 <div class="petal-canvas" id="petalCanvas"></div>
 <div class="dot-grid"></div>
 
-<!-- Valentine's ribbon -->
-<div class="vday-ribbon" id="vdayRibbon">
-  <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-  Happy Valentine's Day — Find your whale today.
-  <a href="app.html">Start matching</a>
-  <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-  <button class="vday-close" onclick="document.getElementById('vdayRibbon').remove()">✕</button>
-</div>
-
 <!-- NAV -->
-<nav id="mainNav" style="top:36px">
+<nav id="mainNav">
   <a href="#" class="nav-logo">
     <div class="nav-logo-mark">
       <svg viewBox="0 0 24 24"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg>
@@ -656,7 +722,10 @@ footer {
     <a href="#">Pricing</a>
   </div>
   <div class="nav-cta">
-    <button class="btn-ghost">Sign in</button>
+    <a href="https://x.com/whalelana" target="_blank" class="btn-ghost" style="display:flex;align-items:center;gap:8px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      Follow
+    </a>
     <a href="app.html" class="btn-primary">
       Find Your Whale
       <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -667,33 +736,22 @@ footer {
 <!-- HERO -->
 <section class="hero">
   <div class="hero-glow"></div>
-  <div class="hero-ring ring-1"></div>
-  <div class="hero-ring ring-2"></div>
-  <div class="hero-ring ring-3"></div>
-
-  <div class="hero-eyebrow">
-    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-    Valentine's Day 2026 · Now Live
-  </div>
 
   <h1 class="hero-headline">
-    Love That's<br>
-    <em>On-Chain.</em>
-    <span class="line2">Diamond Handed.</span>
+    Fuck Around<br>
+    <em>Find Out</em>
   </h1>
 
   <p class="hero-sub">
-    The only dating app that matches you by portfolio, not profile picture. Find someone who HODLs as hard as they love.
+    Dating app for degens who hold bags and want someone to hold them back. No bullshit, just wallets and vibes.
   </p>
 
   <div class="hero-actions">
     <a href="app.html" class="btn-hero">
-      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      Start Matching Free
+      Let's Fucking Go
     </a>
     <a href="#how" class="btn-hero-ghost">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-      See How It Works
+      How It Works
     </a>
   </div>
 
@@ -705,7 +763,7 @@ footer {
       <div class="proof-av" style="background:linear-gradient(135deg,#7A1E30,#4A0A1A)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
       <div class="proof-av" style="background:linear-gradient(135deg,#A8304A,#C8445A)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
     </div>
-    <span class="proof-text"><strong>48,200+</strong> whales matched</span>
+    <span class="proof-text"><strong>48K+</strong> degenerates matched</span>
     <div class="proof-divider"></div>
     <div class="proof-rating">
       <div class="stars">
@@ -715,99 +773,71 @@ footer {
         <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       </div>
-      <span class="proof-rating-text"><strong>4.9</strong> on App Store</span>
+      <span class="proof-rating-text"><strong>4.9</strong> horny af</span>
     </div>
   </div>
 </section>
 
-<!-- APP PREVIEW -->
-<div class="card-preview">
-  <div class="preview-frame">
-    <div class="preview-img">
-      <!-- Mini app mockup -->
-      <div class="mock-bar">
-        <span class="mock-logo">Whale<em>lana</em></span>
-        <div class="mock-nav">
-          <div class="mock-nav-dot" style="background:var(--rose);opacity:0.6"></div>
-          <div class="mock-nav-dot" style="background:rgba(200,68,90,0.2)"></div>
-          <div class="mock-nav-dot" style="background:rgba(200,68,90,0.2)"></div>
+<!-- CAROUSEL -->
+<div class="carousel-section">
+  <div class="carousel-container">
+    <button class="carousel-nav carousel-prev" id="carouselPrev">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    
+    <div class="carousel-track" id="carouselTrack">
+      <div class="carousel-card" data-index="0">
+        <img src="627644310_4391249524532456_2270475387538904170_n.png" alt="Profile 1" />
+        <div class="carousel-card-info">
+          <div class="carousel-card-name">PepeMaximalist, 27</div>
+          <div class="carousel-card-tag">$PEPE holder · 87% match</div>
         </div>
       </div>
-      <div class="mock-body">
-        <div class="mock-sidebar">
-          <div class="mock-sidebar-profile"></div>
-          <div class="mock-sidebar-items">
-            <div class="mock-sidebar-item"></div>
-            <div class="mock-sidebar-item sm"></div>
-            <div class="mock-sidebar-item sm"></div>
-            <div class="mock-sidebar-item sm"></div>
-          </div>
+      
+      <div class="carousel-card" data-index="1">
+        <img src="627227118_1343481877497654_896542719185624334_n.png" alt="Profile 2" />
+        <div class="carousel-card-info">
+          <div class="carousel-card-name">BonkBoss_Sol, 24</div>
+          <div class="carousel-card-tag">$BONK maxi · 72% match</div>
         </div>
-        <div class="mock-main">
-          <div class="mock-card">
-            <div class="mock-card-top"></div>
-            <div class="mock-card-body">
-              <div class="mock-name-line"></div>
-              <div class="mock-sub-line"></div>
-              <div class="mock-text-lines">
-                <div class="mock-text-line" style="width:100%"></div>
-                <div class="mock-text-line" style="width:88%"></div>
-                <div class="mock-text-line" style="width:70%"></div>
-              </div>
-              <div class="mock-chips-row">
-                <div class="mock-chip"></div>
-                <div class="mock-chip" style="width:48px"></div>
-                <div class="mock-chip" style="width:36px"></div>
-              </div>
-            </div>
-          </div>
-          <div class="mock-actions">
-            <button class="mock-btn mock-btn-nope">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-            <button class="mock-btn mock-btn-pump">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-            <button class="mock-btn mock-btn-super">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            </button>
-          </div>
+      </div>
+      
+      <div class="carousel-card" data-index="2">
+        <img src="617072142_1421929106054259_8235768988003589789_n.png" alt="Profile 3" />
+        <div class="carousel-card-info">
+          <div class="carousel-card-name">DogeQueenOG, 31</div>
+          <div class="carousel-card-tag">$DOGE OG · 91% match</div>
+        </div>
+      </div>
+      
+      <div class="carousel-card" data-index="3">
+        <img src="630620418_1437712531225695_4483064244949154140_n.png" alt="Profile 4" />
+        <div class="carousel-card-info">
+          <div class="carousel-card-name">FoxDegenXO, 26</div>
+          <div class="carousel-card-tag">$FLOKI whale · 78% match</div>
+        </div>
+      </div>
+      
+      <div class="carousel-card" data-index="4">
+        <img src="629867843_25826663980278222_43902955839152861_n.png" alt="Profile 5" />
+        <div class="carousel-card-info">
+          <div class="carousel-card-name">ShibArmy, 29</div>
+          <div class="carousel-card-tag">$SHIB diamond · 84% match</div>
         </div>
       </div>
     </div>
-
-    <!-- Floating badges -->
-    <div class="preview-badge badge-match">
-      <div class="pb-icon" style="background:rgba(200,68,90,0.08)">
-        <svg viewBox="0 0 24 24" stroke="var(--rose)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      </div>
-      <div class="pb-text">
-        <span class="pb-title">It's a Match!</span>
-        <span class="pb-sub">PepeMaximalist liked you</span>
-      </div>
-    </div>
-
-    <div class="preview-badge badge-price">
-      <div class="pb-icon" style="background:rgba(42,155,91,0.08)">
-        <svg viewBox="0 0 24 24" stroke="#2A9B5B"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-      </div>
-      <div class="pb-text">
-        <span class="pb-title" style="color:#2A9B5B">$PEPE +44.1%</span>
-        <span class="pb-sub">Trending in your network</span>
-      </div>
-    </div>
-
-    <div class="preview-badge badge-compat">
-      <div class="pb-icon" style="background:rgba(201,169,110,0.1)">
-        <svg viewBox="0 0 24 24" stroke="var(--gold)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      </div>
-      <div class="pb-text">
-        <span class="pb-title">87% Compatible</span>
-        <span class="pb-sub">Same bags · Same vibes</span>
-      </div>
-    </div>
+    
+    <button class="carousel-nav carousel-next" id="carouselNext">
+      <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+  
+  <div class="carousel-caption">
+    <h3>Hot Shit Only</h3>
+    <p>Swipe on verified whales with actual fucking bags</p>
   </div>
 </div>
+
 
 <!-- TICKER -->
 <div class="ticker">
@@ -839,10 +869,10 @@ footer {
   <div class="reveal">
     <div class="section-label">
       <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      Why Whalelana
+      Features
     </div>
-    <h2 class="section-headline">Built for Degens<br>Who Want to <em>Settle Down</em></h2>
-    <p class="section-sub">Every feature is designed around what actually matters — shared conviction, compatible risk tolerance, and mutual diamond hands.</p>
+    <h2 class="section-headline">No BS,<br><em>Just Bags</em></h2>
+    <p class="section-sub">Match with degenerates who hold the same shit. See who's pumping, who's diamond handing, and who's down bad.</p>
   </div>
 
   <div class="features-grid">
@@ -850,24 +880,24 @@ footer {
       <div class="feat-icon" style="background:rgba(200,68,90,0.08)">
         <svg viewBox="0 0 24 24" stroke="var(--rose)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       </div>
-      <div class="feat-title">Portfolio Matching</div>
-      <div class="feat-desc">Our algorithm compares wallet composition, risk tolerance, and hodl history to surface compatible matches — not just cute profiles.</div>
+      <div class="feat-title">Bag Matching</div>
+      <div class="feat-desc">Find other degens holding the same shitcoins. PEPE, BONK, DOGE — if you fuck with it, they fuck with it.</div>
     </div>
 
     <div class="feat-card reveal reveal-delay-2">
       <div class="feat-icon" style="background:rgba(201,169,110,0.1)">
         <svg viewBox="0 0 24 24" stroke="var(--gold)"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       </div>
-      <div class="feat-title">Live Price Feeds</div>
-      <div class="feat-desc">Every profile shows real-time token performance. See who's pumping, who's holding the bag, and who sold at the bottom.</div>
+      <div class="feat-title">Live Prices</div>
+      <div class="feat-desc">Real-time numbers. See who's winning and who's holding bags. No hiding the red.</div>
     </div>
 
     <div class="feat-card reveal reveal-delay-3">
       <div class="feat-icon" style="background:rgba(122,30,48,0.07)">
         <svg viewBox="0 0 24 24" stroke="var(--wine)"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </div>
-      <div class="feat-title">Whale Verification</div>
-      <div class="feat-desc">On-chain wallet verification ensures everyone is who they say they are. No fake screenshots, no paper-hand catfishes.</div>
+      <div class="feat-title">Verified Whales</div>
+      <div class="feat-desc">On-chain proof. No paper hands, no fake screenshots, no broke bitches.</div>
     </div>
 
     <div class="feat-card large reveal reveal-delay-1">
@@ -885,7 +915,7 @@ footer {
           <svg viewBox="0 0 24 24" stroke="var(--rose)"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
         <div class="feat-title">Compatibility Score</div>
-        <div class="feat-desc">A proprietary 0–100 compatibility score computed from overlapping bags, trading frequency, chain preference, average holding time, and portfolio growth trajectory. The deeper the alignment, the higher the score.</div>
+        <div class="feat-desc">0–100 score based on your bags. Higher score = you're gonna vibe. Lower score = swipe left, bitch.</div>
       </div>
     </div>
 
@@ -893,8 +923,8 @@ footer {
       <div class="feat-icon" style="background:rgba(74,124,196,0.07)">
         <svg viewBox="0 0 24 24" stroke="#4A7CC4"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       </div>
-      <div class="feat-title">Crypto Icebreakers</div>
-      <div class="feat-desc">Break the ice with curated conversation starters designed around shared holdings, market opinions, and degen philosophy.</div>
+      <div class="feat-title">Degen Icebreakers</div>
+      <div class="feat-desc">Pre-loaded conversation starters about bags, pumps, and rugpulls. Skip the "hey" bullshit.</div>
     </div>
 
     <div class="feat-card reveal reveal-delay-3">
@@ -902,7 +932,7 @@ footer {
         <svg viewBox="0 0 24 24" stroke="var(--rose)"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       </div>
       <div class="feat-title">Whale Alerts</div>
-      <div class="feat-desc">Get notified when your matches make major moves — big buys, new positions, or whale-tier transactions that affect compatibility.</div>
+      <div class="feat-desc">Get notified when matches buy heavy or dump hard. Know when they're making moves.</div>
     </div>
   </div>
 </section>
@@ -915,7 +945,7 @@ footer {
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
         How It Works
       </div>
-      <h2 class="section-headline">From Wallet<br>to <em>First Date</em></h2>
+      <h2 class="section-headline">From Zero to<br><em>Fucking</em></h2>
     </div>
     <div class="how-steps">
       <div class="step reveal reveal-delay-1">
@@ -924,31 +954,31 @@ footer {
           <svg viewBox="0 0 24 24" stroke="var(--rose)"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
         </div>
         <div class="step-title">Connect Wallet</div>
-        <div class="step-desc">Link your EVM, Solana, or multi-chain wallet. We read your holdings — nothing else. No private keys, ever.</div>
+        <div class="step-desc">Plug in your wallet. Show us what you're holding. We verify you're not some broke-ass paper hand.</div>
       </div>
       <div class="step reveal reveal-delay-2">
         <div class="step-num">02</div>
         <div class="step-icon" style="background:rgba(201,169,110,0.09)">
           <svg viewBox="0 0 24 24" stroke="var(--gold)"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
-        <div class="step-title">Build Your Profile</div>
-        <div class="step-desc">Write a bio, set your preferences, and let your portfolio speak for itself. Your bags are your personality.</div>
+        <div class="step-title">Build Profile</div>
+        <div class="step-desc">Drop some pics, write whatever the fuck you want. Your bags will do most of the talking anyway.</div>
       </div>
       <div class="step reveal reveal-delay-3">
         <div class="step-num">03</div>
         <div class="step-icon" style="background:rgba(200,68,90,0.08)">
           <svg viewBox="0 0 24 24" stroke="var(--rose)"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         </div>
-        <div class="step-title">Discover Whales</div>
-        <div class="step-desc">Swipe through verified profiles sorted by compatibility score. Filter by chain, portfolio size, and favorite coins.</div>
+        <div class="step-title">Swipe Hot Shit</div>
+        <div class="step-desc">Browse verified whales sorted by compatibility. Filter by PEPE degens, BONK maxis, DOGE OGs — whatever gets you hard.</div>
       </div>
       <div class="step reveal reveal-delay-4">
         <div class="step-num">04</div>
         <div class="step-icon" style="background:rgba(122,30,48,0.07)">
           <svg viewBox="0 0 24 24" stroke="var(--wine)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </div>
-        <div class="step-title">Match and HODL</div>
-        <div class="step-desc">Mutual pumps unlock a match. Start chatting, share alpha, and find out if the vibe is as strong as the conviction.</div>
+        <div class="step-title">Match & Fuck</div>
+        <div class="step-desc">Both swipe right? Start chatting. Share alpha, talk shit, see where it goes. Maybe you'll pump together.</div>
       </div>
     </div>
   </div>
@@ -959,19 +989,19 @@ footer {
   <div class="stats-band-inner">
     <div class="stat-item">
       <span class="stat-num">48<em>K</em></span>
-      <span class="stat-label">Active Whale Profiles</span>
+      <span class="stat-label">Active Members</span>
     </div>
     <div class="stat-item">
       <span class="stat-num">2.1<em>M</em></span>
-      <span class="stat-label">Matches Made</span>
+      <span class="stat-label">Total Matches</span>
     </div>
     <div class="stat-item">
       <span class="stat-num">$4<em>B</em></span>
-      <span class="stat-label">Combined Portfolio Value</span>
+      <span class="stat-label">Total Portfolio Value</span>
     </div>
     <div class="stat-item">
-      <span class="stat-num">94<em>%</em></span>
-      <span class="stat-label">Still Holding After 6 Months</span>
+      <span class="stat-num">87<em>%</em></span>
+      <span class="stat-label">Match Rate</span>
     </div>
   </div>
 </div>
@@ -981,9 +1011,9 @@ footer {
   <div class="reveal">
     <div class="section-label">
       <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      Love Stories
+      Real Talk
     </div>
-    <h2 class="section-headline">They Found Their<br><em>Diamond Hand</em></h2>
+    <h2 class="section-headline">Degens Speak<br><em>the Truth</em></h2>
   </div>
 
   <div class="testi-grid">
@@ -995,12 +1025,12 @@ footer {
         <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       </div>
-      <div class="testi-text">"We matched because we both held $PEPE through the crash of 2024. That kind of shared trauma bonds people. We're getting married in April."</div>
+      <div class="testi-text">"Met a bad bitch who held PEPE from $0.000001. We're fucking married now. This app is insane."</div>
       <div class="testi-author">
         <div class="testi-av" style="background:linear-gradient(135deg,#C8445A,#7A1E30)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
         <div>
-          <div class="testi-name">CryptoRomeoXO</div>
-          <div class="testi-handle">@cryptoromeo · ETH</div>
+          <div class="testi-name">Alex M.</div>
+          <div class="testi-handle">ETH maxi</div>
         </div>
         <div class="testi-coin">
           <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -1017,12 +1047,12 @@ footer {
         <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       </div>
-      <div class="testi-text">"I used to explain BONK to people at dinner and watch their eyes glaze over. Then I met someone on Whalelana who already understood. That was enough."</div>
+      <div class="testi-text">"No more explaining my degen plays to normies. Found someone who gets it and fucks hard. 10/10."</div>
       <div class="testi-author">
         <div class="testi-av" style="background:linear-gradient(135deg,#4A7CC4,#1A4C94)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
         <div>
-          <div class="testi-name">BonkBride</div>
-          <div class="testi-handle">@bonkbride · SOL</div>
+          <div class="testi-name">Jamie L.</div>
+          <div class="testi-handle">SOL degen</div>
         </div>
         <div class="testi-coin">
           <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -1039,12 +1069,12 @@ footer {
         <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       </div>
-      <div class="testi-text">"She was a DOGE OG. I was a late DOGE buyer. She forgave me for not getting in at $0.003. That's how I knew she was the one."</div>
+      <div class="testi-text">"Matched with a DOGE whale. She's sexy as fuck and understands why I won't sell. This app slaps."</div>
       <div class="testi-author">
         <div class="testi-av" style="background:linear-gradient(135deg,#C9A96E,#8B6914)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
         <div>
-          <div class="testi-name">LateDogeGuy</div>
-          <div class="testi-handle">@latedoge · Multi</div>
+          <div class="testi-name">Taylor K.</div>
+          <div class="testi-handle">Multi-chain whale</div>
         </div>
         <div class="testi-coin">
           <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -1055,28 +1085,18 @@ footer {
   </div>
 </section>
 
-<!-- CTA -->
+<!-- CTA SECTION -->
 <div class="cta-section">
   <div class="cta-box reveal">
-    <div class="cta-eyebrow">
-      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      Free to Join · No Gas Fees
-    </div>
-    <h2 class="cta-headline">Your Whale is<br><em>Waiting</em> for You</h2>
-    <p class="cta-sub">Don't let this Valentine's Day pass without finding someone who understands the pain of a rug pull and the joy of a 100x.</p>
+    <h2 class="cta-headline">Stop Wasting<br><em>Your Time</em></h2>
+    <p class="cta-sub">Thousands of degens are already matching. Stop fucking around with normies and find someone who actually gets it.</p>
     <div class="cta-actions">
       <a href="app.html" class="btn-cta">
-        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        Start Matching Now
+        Start Swiping Now
       </a>
       <a href="#how" class="btn-cta-ghost">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-        Learn More
+        How It Works
       </a>
-    </div>
-    <div class="valentines-badge">
-      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      Valentine's Day Special — 3x Boost Free for 48 Hours
     </div>
   </div>
 </div>
@@ -1092,9 +1112,7 @@ footer {
     <a href="#">Docs</a>
   </div>
   <div class="footer-copy">
-    Made with
-    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-    for degens, by degens
+    © 2026 Whalelana
   </div>
 </footer>
 
@@ -1132,6 +1150,63 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 reveals.forEach(r => observer.observe(r));
+
+// Carousel
+(function() {
+  const track = document.getElementById('carouselTrack');
+  const cards = Array.from(track.querySelectorAll('.carousel-card'));
+  const prevBtn = document.getElementById('carouselPrev');
+  const nextBtn = document.getElementById('carouselNext');
+  let currentIndex = 0;
+
+  function updateCarousel() {
+    cards.forEach((card, i) => {
+      const diff = i - currentIndex;
+      card.removeAttribute('data-pos');
+      
+      if (diff === 0) {
+        card.setAttribute('data-pos', 'center');
+      } else if (diff === -1 || (diff === cards.length - 1)) {
+        card.setAttribute('data-pos', 'left');
+      } else if (diff === 1 || (diff === -(cards.length - 1))) {
+        card.setAttribute('data-pos', 'right');
+      } else if (diff === -2 || (diff === cards.length - 2)) {
+        card.setAttribute('data-pos', 'far-left');
+      } else if (diff === 2 || (diff === -(cards.length - 2))) {
+        card.setAttribute('data-pos', 'far-right');
+      } else {
+        card.setAttribute('data-pos', 'hidden');
+      }
+    });
+  }
+
+  function next() {
+    currentIndex = (currentIndex + 1) % cards.length;
+    updateCarousel();
+  }
+
+  function prev() {
+    currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+    updateCarousel();
+  }
+
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+  
+  // Click card to center it
+  cards.forEach((card, i) => {
+    card.addEventListener('click', () => {
+      currentIndex = i;
+      updateCarousel();
+    });
+  });
+
+  // Auto-rotate
+  setInterval(next, 4000);
+
+  // Initial position
+  updateCarousel();
+})();
 </script>
 </body>
 </html>
