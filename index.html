@@ -673,6 +673,117 @@ footer {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ─── CONTRACT ADDRESS ─── */
+.ca-section {
+  position: relative; z-index: 5;
+  padding: 60px 24px;
+  display: flex;
+  justify-content: center;
+  animation: fade-up 0.7s 0.5s ease both;
+}
+
+.ca-container {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+.ca-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--rose);
+  margin-bottom: 12px;
+}
+
+.ca-box {
+  background: white;
+  border: 1.5px solid var(--border-md);
+  border-radius: 16px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(200,68,90,0.08);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ca-box:hover {
+  border-color: var(--rose);
+  box-shadow: 0 6px 24px rgba(200,68,90,0.15);
+}
+
+.ca-text {
+  font-family: 'DM Sans', monospace;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--charcoal);
+  letter-spacing: 0.3px;
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ca-copy {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: var(--petal);
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--rose);
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.ca-copy:hover {
+  background: var(--rose);
+  color: white;
+  border-color: var(--rose);
+  transform: translateY(-1px);
+}
+
+.ca-copy svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity 0.2s;
+}
+
+.ca-copy .check-icon {
+  position: absolute;
+  left: 16px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ca-copy.copied .copy-icon {
+  opacity: 0;
+}
+
+.ca-copy.copied .check-icon {
+  opacity: 1;
+}
+
+.ca-copy.copied {
+  background: #2A9B5B;
+  color: white;
+  border-color: #2A9B5B;
+}
+
 .reveal {
   opacity: 0; transform: translateY(32px);
   transition: opacity 0.7s ease, transform 0.7s ease;
@@ -722,10 +833,9 @@ footer {
     <a href="#">Pricing</a>
   </div>
   <div class="nav-cta">
-    <a href="https://x.com/whalelana" target="_blank" class="btn-ghost" style="display:flex;align-items:center;gap:8px;">
+    <a href="https://x.com/i/communities/2022645982941552665?fbclid=IwY2xjawP9Sa1leHRuA2FlbQIxMABicmlkETIxOTJxWWI0cFJJTDZZR3k0c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHsV-ujMImOMF3S-_4Sk3itqggBMurgVqw1yDXeD3CTDy2DbPqXyxrhbbXW8M_aem_RCRPTtoO1yqAhUCfHmZWlg" target="_blank" class="btn-ghost" style="display:flex;align-items:center;gap:8px;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
       FUCK HERE
-    </a>
     <a href="app.html" class="btn-primary">
       Find Your Whale
       <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -777,6 +887,21 @@ footer {
     </div>
   </div>
 </section>
+
+<!-- CONTRACT ADDRESS -->
+<div class="ca-section">
+  <div class="ca-container">
+    <div class="ca-label">Contract Address</div>
+    <div class="ca-box" id="caBox">
+      <span class="ca-text" id="caText">TBA - Coming Soon</span>
+      <button class="ca-copy" id="caCopy" onclick="copyCA()">
+        <svg class="copy-icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <span class="ca-copy-text">Copy</span>
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- CAROUSEL -->
 <div class="carousel-section">
@@ -1150,6 +1275,25 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 reveals.forEach(r => observer.observe(r));
+
+// Copy CA
+function copyCA() {
+  const caText = document.getElementById('caText').textContent;
+  const copyBtn = document.getElementById('caCopy');
+  const copyText = copyBtn.querySelector('.ca-copy-text');
+  
+  navigator.clipboard.writeText(caText).then(() => {
+    copyBtn.classList.add('copied');
+    copyText.textContent = 'Copied!';
+    
+    setTimeout(() => {
+      copyBtn.classList.remove('copied');
+      copyText.textContent = 'Copy';
+    }, 2000);
+  }).catch(err => {
+    console.error('Failed to copy:', err);
+  });
+}
 
 // Carousel
 (function() {
