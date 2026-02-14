@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Whalelana — Where Whales Fall in Love</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
+
+:root {
+  --rose:      #C8445A;
+  --rose-light:#E8697C;
+  --rose-deep: #A8304A;
+  --blush:     #F2C4CE;
+  --blush-pale:#FAF0F2;
+  --cream:     #FDF8F4;
+  --petal:     #FAE8ED;
+  --wine:      #7A1E30;
+  --wine-deep: #4E0F1E;
+  --dust:      #C4929A;
+  --gold:      #C9A96E;
+  --gold-light:#E8C98A;
+  --charcoal:  #2A1F22;
+  --muted:     #9A7880;
+  --border:    rgba(200,68,90,0.1);
+  --border-md: rgba(200,68,90,0.18);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--charcoal);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── CANVAS / PETALS ─── */
+.petal-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.p {
+  position: absolute;
+  border-radius: 50% 50% 50% 0 / 60% 60% 40% 40%;
+  background: var(--blush);
+  animation: pfall linear infinite;
+}
+@keyframes pfall {
+  0%   { transform: translateY(-30px) rotate(0deg) translateX(0); opacity: 0; }
+  8%   { opacity: 0.4; }
+  92%  { opacity: 0.15; }
+  100% { transform: translateY(110vh) rotate(800deg) translateX(40px); opacity: 0; }
+}
+
+/* Subtle dot grid */
+.dot-grid {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: radial-gradient(circle, rgba(200,68,90,0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 60px;
+  background: rgba(253,248,244,0.85);
+  backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 1px solid var(--border);
+  transition: padding 0.3s, box-shadow 0.3s;
+}
+nav.scrolled { padding: 12px 60px; box-shadow: 0 2px 20px rgba(200,68,90,0.06); }
+
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-mark {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--rose), var(--wine));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-logo-mark svg { width: 15px; height: 15px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.nav-logo-text { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--charcoal); letter-spacing: -0.2px; }
+.nav-logo-text em { color: var(--rose); font-style: italic; }
+
+.nav-links { display: flex; align-items: center; gap: 32px; }
+.nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.2s; letter-spacing: 0.1px; }
+.nav-links a:hover { color: var(--rose); }
+
+.nav-cta { display: flex; align-items: center; gap: 10px; }
+.btn-ghost {
+  padding: 8px 18px; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  color: var(--rose); background: transparent;
+  border: 1px solid var(--border-md); cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+}
+.btn-ghost:hover { background: var(--petal); border-color: rgba(200,68,90,0.3); }
+
+.btn-primary {
+  padding: 8px 20px; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+  color: white; background: linear-gradient(135deg, var(--rose), var(--wine));
+  border: none; cursor: pointer;
+  box-shadow: 0 3px 12px rgba(200,68,90,0.28);
+  transition: opacity 0.18s, transform 0.15s, box-shadow 0.18s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
+}
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 5px 18px rgba(200,68,90,0.38); }
+.btn-primary svg { width: 13px; height: 13px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ─── HERO ─── */
+.hero {
+  position: relative; z-index: 5;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 20%, rgba(200,68,90,0.1) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,169,110,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 80% 70%, rgba(122,30,48,0.06) 0%, transparent 60%);
+}
+
+/* Decorative rings */
+.hero-ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid var(--border); pointer-events: none;
+  animation: ring-pulse 4s ease-in-out infinite;
+}
+.ring-1 { width: 500px; height: 500px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 0s; }
+.ring-2 { width: 720px; height: 720px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 0.8s; }
+.ring-3 { width: 960px; height: 960px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 1.6s; }
+@keyframes ring-pulse { 0%,100%{opacity:0.4} 50%{opacity:0.12} }
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px; border-radius: 100px;
+  background: var(--petal); border: 1px solid var(--border-md);
+  font-size: 11px; font-weight: 600; color: var(--rose);
+  letter-spacing: 0.8px; text-transform: uppercase;
+  margin-bottom: 28px;
+  animation: fade-up 0.7s ease both;
+}
+.hero-eyebrow svg { width: 12px; height: 12px; stroke: var(--rose); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.hero-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(56px, 8vw, 100px);
+  font-weight: 700;
+  line-height: 0.96;
+  letter-spacing: -2px;
+  color: var(--charcoal);
+  margin-bottom: 28px;
+  max-width: 900px;
+  animation: fade-up 0.7s 0.1s ease both;
+}
+.hero-headline em { color: var(--rose); font-style: italic; }
+.hero-headline .line2 { display: block; }
+
+.hero-sub {
+  font-size: 17px; line-height: 1.7; color: var(--muted);
+  max-width: 520px; margin-bottom: 44px;
+  animation: fade-up 0.7s 0.2s ease both;
+  font-weight: 400;
+}
+
+.hero-actions {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 60px;
+  animation: fade-up 0.7s 0.3s ease both;
+}
+
+.btn-hero {
+  padding: 14px 32px; border-radius: 12px;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+  color: white; background: linear-gradient(135deg, var(--rose), var(--wine));
+  border: none; cursor: pointer;
+  box-shadow: 0 6px 24px rgba(200,68,90,0.36);
+  transition: opacity 0.18s, transform 0.15s, box-shadow 0.18s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  letter-spacing: 0.1px;
+}
+.btn-hero:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 10px 32px rgba(200,68,90,0.45); }
+.btn-hero svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.btn-hero-ghost {
+  padding: 14px 28px; border-radius: 12px;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+  color: var(--charcoal); background: white;
+  border: 1.5px solid var(--border-md); cursor: pointer;
+  transition: border-color 0.18s, color 0.18s, transform 0.15s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-hero-ghost:hover { border-color: var(--rose); color: var(--rose); transform: translateY(-2px); }
+.btn-hero-ghost svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Social proof */
+.hero-proof {
+  display: flex; align-items: center; gap: 20px;
+  animation: fade-up 0.7s 0.4s ease both;
+}
+.proof-avatars {
+  display: flex;
+}
+.proof-av {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 2.5px solid white;
+  display: flex; align-items: center; justify-content: center;
+  margin-left: -10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.proof-av:first-child { margin-left: 0; }
+.proof-av svg { width: 14px; height: 14px; fill: none; stroke: white; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.proof-text { font-size: 13px; color: var(--muted); font-weight: 400; }
+.proof-text strong { color: var(--charcoal); font-weight: 600; }
+.proof-divider { width: 1px; height: 28px; background: var(--border); }
+.proof-rating { display: flex; align-items: center; gap: 6px; }
+.stars { display: flex; gap: 2px; }
+.stars svg { width: 13px; height: 13px; stroke: var(--gold); fill: var(--gold); }
+.proof-rating-text { font-size: 13px; color: var(--muted); }
+.proof-rating-text strong { color: var(--charcoal); }
+
+/* ─── CARD PREVIEW ─── */
+.card-preview {
+  position: relative; z-index: 5;
+  padding: 0 24px 120px;
+  display: flex; justify-content: center;
+  animation: fade-up 0.9s 0.5s ease both;
+}
+
+.preview-frame {
+  position: relative; width: 100%; max-width: 860px;
+}
+
+.preview-shadow {
+  position: absolute; inset: -2px; border-radius: 26px;
+  background: linear-gradient(135deg, var(--rose), var(--wine), var(--gold));
+  padding: 2px; z-index: -1;
+}
+.preview-shadow-inner { background: white; border-radius: 24px; width: 100%; height: 100%; }
+
+.preview-img {
+  width: 100%; border-radius: 22px;
+  background: white;
+  border: 1px solid var(--border-md);
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(200,68,90,0.15), 0 8px 24px rgba(0,0,0,0.06);
+  position: relative;
+}
+
+/* Mini app mockup inside the preview */
+.mock-bar {
+  background: rgba(253,248,244,0.95);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.mock-logo { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 600; color: var(--charcoal); }
+.mock-logo em { color: var(--rose); font-style: italic; }
+.mock-nav { display: flex; gap: 6px; }
+.mock-nav-dot { width: 28px; height: 6px; border-radius: 3px; }
+
+.mock-body { display: grid; grid-template-columns: 200px 1fr; min-height: 380px; }
+.mock-sidebar { background: white; border-right: 1px solid var(--border); padding: 16px; }
+.mock-sidebar-profile {
+  height: 48px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--rose), var(--wine));
+  margin-bottom: 10px; opacity: 0.9;
+}
+.mock-sidebar-items { display: flex; flex-direction: column; gap: 6px; }
+.mock-sidebar-item { height: 32px; border-radius: 7px; background: var(--petal); }
+.mock-sidebar-item.sm { height: 24px; width: 70%; background: rgba(200,68,90,0.07); }
+
+.mock-main { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.mock-card {
+  background: white; border: 1px solid var(--border); border-radius: 14px;
+  overflow: hidden; box-shadow: 0 4px 16px rgba(200,68,90,0.08);
+  flex: 1;
+}
+.mock-card-top { height: 110px; background: linear-gradient(135deg, #FDEDF1, #F2BFC9); position: relative; }
+.mock-card-top::after { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C8445A' fill-opacity='0.06'%3E%3Cpath d='M20 20.5C20 20.5 14.5 15 14.5 11.5C14.5 8.5 17 6 20 8C23 6 25.5 8.5 25.5 11.5C25.5 15 20 20.5 20 20.5Z'/%3E%3C/g%3E%3C/svg%3E") repeat; }
+.mock-card-body { padding: 10px 12px; }
+.mock-name-line { height: 12px; border-radius: 4px; background: var(--charcoal); width: 55%; margin-bottom: 5px; opacity: 0.7; }
+.mock-sub-line  { height: 8px; border-radius: 4px; background: var(--rose); width: 35%; margin-bottom: 8px; opacity: 0.5; }
+.mock-text-lines { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+.mock-text-line { height: 7px; border-radius: 3px; background: rgba(154,120,128,0.2); }
+.mock-chips-row { display: flex; gap: 4px; }
+.mock-chip { height: 18px; border-radius: 4px; width: 40px; background: rgba(200,68,90,0.1); }
+
+.mock-actions { display: flex; justify-content: center; gap: 8px; padding: 10px; }
+.mock-btn { border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; }
+.mock-btn-nope  { width: 36px; height: 36px; background: white; border: 1.5px solid rgba(154,120,128,0.2); }
+.mock-btn-pump  { width: 44px; height: 44px; background: linear-gradient(135deg, var(--rose), var(--wine)); box-shadow: 0 4px 12px rgba(200,68,90,0.35); }
+.mock-btn-super { width: 36px; height: 36px; background: white; border: 1.5px solid rgba(201,169,110,0.3); }
+.mock-btn svg { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Floating badges on preview */
+.preview-badge {
+  position: absolute;
+  background: white; border: 1px solid var(--border);
+  border-radius: 14px; padding: 10px 14px;
+  box-shadow: 0 8px 28px rgba(200,68,90,0.14);
+  display: flex; align-items: center; gap: 9px;
+  animation: float 3s ease-in-out infinite;
+}
+.pb-icon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.pb-icon svg { width: 16px; height: 16px; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.pb-text { font-size: 12px; }
+.pb-title { font-weight: 600; color: var(--charcoal); display: block; line-height: 1.2; }
+.pb-sub   { color: var(--muted); font-size: 11px; }
+
+.badge-match { top: -20px; right: -30px; animation-delay: 0s; }
+.badge-price { bottom: 40px; left: -30px; animation-delay: 1.2s; }
+.badge-compat { bottom: -20px; right: 60px; animation-delay: 0.6s; }
+
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+/* ─── TICKER ─── */
+.ticker {
+  position: relative; z-index: 5;
+  background: var(--rose); padding: 8px 0; overflow: hidden;
+}
+.ticker-inner { display: flex; animation: tick 30s linear infinite; white-space: nowrap; }
+@keyframes tick { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.ti {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 0 24px; font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.75); flex-shrink: 0;
+  border-right: 1px solid rgba(255,255,255,0.12);
+}
+.ti .sym { color: white; font-weight: 700; }
+.ti .up  { color: #B8F5D0; font-weight: 600; }
+.ti .dn  { color: #FFD0D8; font-weight: 600; }
+.ti svg  { width: 9px; height: 9px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ─── FEATURES ─── */
+.features {
+  position: relative; z-index: 5;
+  padding: 120px 60px;
+  max-width: 1200px; margin: 0 auto;
+}
+
+.section-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--rose); margin-bottom: 16px;
+}
+.section-label svg { width: 11px; height: 11px; stroke: var(--rose); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.section-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 700; line-height: 1.05;
+  letter-spacing: -1px; color: var(--charcoal);
+  margin-bottom: 16px;
+}
+.section-headline em { color: var(--rose); font-style: italic; }
+
+.section-sub {
+  font-size: 16px; color: var(--muted); line-height: 1.7;
+  max-width: 500px; margin-bottom: 64px;
+}
+
+.features-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+.feat-card {
+  background: white; border: 1px solid var(--border); border-radius: 20px;
+  padding: 28px; position: relative; overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+.feat-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(200,68,90,0.1); border-color: var(--border-md); }
+.feat-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--rose), var(--gold));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.feat-card:hover::before { transform: scaleX(1); }
+
+.feat-icon {
+  width: 44px; height: 44px; border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px;
+}
+.feat-icon svg { width: 20px; height: 20px; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.feat-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; margin-bottom: 8px; color: var(--charcoal); line-height: 1.2; }
+.feat-desc { font-size: 13.5px; line-height: 1.65; color: var(--muted); }
+
+.feat-card.large { grid-column: span 2; display: flex; gap: 32px; align-items: center; }
+.feat-card.large .feat-visual {
+  width: 260px; flex-shrink: 0;
+  height: 180px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--petal), var(--blush));
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative;
+}
+.feat-card.large .feat-visual svg { width: 80px; height: 80px; stroke: var(--rose); fill: none; stroke-width: 0.8; opacity: 0.35; }
+
+/* ─── HOW IT WORKS ─── */
+.how-section {
+  position: relative; z-index: 5;
+  background: linear-gradient(180deg, transparent, rgba(200,68,90,0.03) 40%, transparent);
+  padding: 100px 60px;
+}
+.how-inner { max-width: 1100px; margin: 0 auto; }
+.how-steps { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0; margin-top: 64px; position: relative; }
+.how-steps::before {
+  content: '';
+  position: absolute; top: 22px; left: calc(12.5%); right: calc(12.5%);
+  height: 1px; background: linear-gradient(90deg, var(--rose), var(--gold), var(--rose));
+  opacity: 0.3;
+}
+
+.step { text-align: center; padding: 0 20px; position: relative; }
+.step-num {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: white; border: 1.5px solid var(--border-md);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 18px;
+  font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700;
+  color: var(--rose); position: relative; z-index: 1;
+  box-shadow: 0 4px 16px rgba(200,68,90,0.12);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.step:hover .step-num { background: var(--rose); color: white; box-shadow: 0 6px 20px rgba(200,68,90,0.3); }
+.step-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+}
+.step-icon svg { width: 22px; height: 22px; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.step-title { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
+.step-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* ─── STATS BAND ─── */
+.stats-band {
+  position: relative; z-index: 5;
+  background: linear-gradient(135deg, var(--wine-deep), var(--wine), var(--rose-deep));
+  padding: 70px 60px;
+  overflow: hidden;
+}
+.stats-band::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.stats-band-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0; position: relative; z-index: 1; }
+.stat-item { text-align: center; padding: 0 24px; border-right: 1px solid rgba(255,255,255,0.1); }
+.stat-item:last-child { border-right: none; }
+.stat-num { font-family: 'Cormorant Garamond', serif; font-size: 52px; font-weight: 700; color: white; line-height: 1; display: block; margin-bottom: 6px; }
+.stat-num em { color: var(--gold-light); font-style: normal; }
+.stat-label { font-size: 13px; color: rgba(255,255,255,0.55); font-weight: 400; }
+
+/* ─── TESTIMONIALS ─── */
+.testimonials {
+  position: relative; z-index: 5;
+  padding: 120px 60px;
+  max-width: 1200px; margin: 0 auto;
+}
+
+.testi-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-top: 64px; }
+
+.testi-card {
+  background: white; border: 1px solid var(--border); border-radius: 18px;
+  padding: 26px; transition: transform 0.22s, box-shadow 0.22s;
+}
+.testi-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(200,68,90,0.08); }
+
+.testi-stars { display: flex; gap: 3px; margin-bottom: 14px; }
+.testi-stars svg { width: 14px; height: 14px; stroke: var(--gold); fill: var(--gold); }
+
+.testi-text { font-size: 14px; line-height: 1.7; color: var(--charcoal); margin-bottom: 18px; font-style: italic; font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 16px; }
+
+.testi-author { display: flex; align-items: center; gap: 10px; }
+.testi-av { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.testi-av svg { width: 15px; height: 15px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.testi-name { font-size: 13px; font-weight: 600; color: var(--charcoal); }
+.testi-handle { font-size: 11px; color: var(--muted); }
+.testi-coin { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--rose); font-weight: 600; margin-left: auto; }
+.testi-coin svg { width: 11px; height: 11px; stroke: var(--rose); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ─── CTA SECTION ─── */
+.cta-section {
+  position: relative; z-index: 5;
+  padding: 80px 24px 120px;
+  display: flex; justify-content: center;
+}
+
+.cta-box {
+  max-width: 780px; width: 100%;
+  background: linear-gradient(135deg, var(--wine-deep) 0%, var(--wine) 50%, var(--rose-deep) 100%);
+  border-radius: 28px; padding: 72px 60px;
+  text-align: center; position: relative; overflow: hidden;
+  box-shadow: 0 32px 80px rgba(122,30,48,0.3);
+}
+.cta-box::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.cta-box::after {
+  content: '';
+  position: absolute; top: -120px; right: -120px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(201,169,110,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-eyebrow {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 14px; border-radius: 100px;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+  font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.7);
+  letter-spacing: 0.8px; text-transform: uppercase;
+  margin-bottom: 22px; position: relative; z-index: 1;
+}
+.cta-eyebrow svg { width: 11px; height: 11px; stroke: rgba(255,255,255,0.7); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.cta-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(38px, 5vw, 56px);
+  font-weight: 700; line-height: 1.05;
+  letter-spacing: -1px; color: white;
+  margin-bottom: 16px; position: relative; z-index: 1;
+}
+.cta-headline em { color: var(--gold-light); font-style: italic; }
+
+.cta-sub {
+  font-size: 15px; color: rgba(255,255,255,0.55);
+  line-height: 1.7; max-width: 420px; margin: 0 auto 40px;
+  position: relative; z-index: 1;
+}
+
+.cta-actions { display: flex; align-items: center; justify-content: center; gap: 12px; position: relative; z-index: 1; }
+
+.btn-cta {
+  padding: 14px 32px; border-radius: 12px;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+  color: var(--wine-deep); background: white;
+  border: none; cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  transition: transform 0.15s, box-shadow 0.18s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.25); }
+.btn-cta svg { width: 15px; height: 15px; stroke: var(--rose); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.btn-cta-ghost {
+  padding: 14px 24px; border-radius: 12px;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+  color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15); cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-cta-ghost:hover { background: rgba(255,255,255,0.14); color: white; }
+.btn-cta-ghost svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Valentine's date badge */
+.valentines-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(201,169,110,0.12); border: 1px solid rgba(201,169,110,0.25);
+  border-radius: 100px; padding: 6px 14px;
+  font-size: 11px; color: var(--gold-light); font-weight: 500;
+  margin-top: 24px; position: relative; z-index: 1;
+}
+.valentines-badge svg { width: 12px; height: 12px; stroke: var(--gold-light); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ─── FOOTER ─── */
+footer {
+  position: relative; z-index: 5;
+  border-top: 1px solid var(--border); padding: 40px 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(253,248,244,0.8);
+}
+.footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: var(--charcoal); }
+.footer-logo em { color: var(--rose); font-style: italic; }
+.footer-links { display: flex; gap: 28px; }
+.footer-links a { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.18s; }
+.footer-links a:hover { color: var(--rose); }
+.footer-copy { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+.footer-copy svg { width: 11px; height: 11px; stroke: var(--rose); fill: var(--rose); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* Valentine's day special ribbon */
+.vday-ribbon {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: linear-gradient(90deg, var(--wine-deep), var(--rose), var(--wine-deep));
+  text-align: center; padding: 8px;
+  font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.85);
+  letter-spacing: 0.3px;
+}
+.vday-ribbon svg { width: 12px; height: 12px; stroke: var(--gold-light); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; display: inline; vertical-align: middle; margin: 0 5px; }
+.vday-ribbon a { color: var(--gold-light); text-decoration: none; font-weight: 600; }
+.vday-ribbon a:hover { text-decoration: underline; }
+.vday-close {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer; color: rgba(255,255,255,0.5);
+  font-size: 14px; line-height: 1;
+}
+</style>
+</head>
+<body>
+
+<!-- Petals & grid -->
+<div class="petal-canvas" id="petalCanvas"></div>
+<div class="dot-grid"></div>
+
+<!-- Valentine's ribbon -->
+<div class="vday-ribbon" id="vdayRibbon">
+  <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+  Happy Valentine's Day — Find your whale today.
+  <a href="app.html">Start matching</a>
+  <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+  <button class="vday-close" onclick="document.getElementById('vdayRibbon').remove()">✕</button>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav" style="top:36px">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg>
+    </div>
+    <span class="nav-logo-text">Whale<em>lana</em></span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#testimonials">Stories</a>
+    <a href="#">Pricing</a>
+  </div>
+  <div class="nav-cta">
+    <button class="btn-ghost">Sign in</button>
+    <a href="app.html" class="btn-primary">
+      Find Your Whale
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-ring ring-1"></div>
+  <div class="hero-ring ring-2"></div>
+  <div class="hero-ring ring-3"></div>
+
+  <div class="hero-eyebrow">
+    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    Valentine's Day 2026 · Now Live
+  </div>
+
+  <h1 class="hero-headline">
+    Love That's<br>
+    <em>On-Chain.</em>
+    <span class="line2">Diamond Handed.</span>
+  </h1>
+
+  <p class="hero-sub">
+    The only dating app that matches you by portfolio, not profile picture. Find someone who HODLs as hard as they love.
+  </p>
+
+  <div class="hero-actions">
+    <a href="app.html" class="btn-hero">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Start Matching Free
+    </a>
+    <a href="#how" class="btn-hero-ghost">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+      See How It Works
+    </a>
+  </div>
+
+  <div class="hero-proof">
+    <div class="proof-avatars">
+      <div class="proof-av" style="background:linear-gradient(135deg,#C8445A,#7A1E30)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div class="proof-av" style="background:linear-gradient(135deg,#C9A96E,#8B6914)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div class="proof-av" style="background:linear-gradient(135deg,#E8697C,#C8445A)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div class="proof-av" style="background:linear-gradient(135deg,#7A1E30,#4A0A1A)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div class="proof-av" style="background:linear-gradient(135deg,#A8304A,#C8445A)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+    </div>
+    <span class="proof-text"><strong>48,200+</strong> whales matched</span>
+    <div class="proof-divider"></div>
+    <div class="proof-rating">
+      <div class="stars">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <span class="proof-rating-text"><strong>4.9</strong> on App Store</span>
+    </div>
+  </div>
+</section>
+
+<!-- APP PREVIEW -->
+<div class="card-preview">
+  <div class="preview-frame">
+    <div class="preview-img">
+      <!-- Mini app mockup -->
+      <div class="mock-bar">
+        <span class="mock-logo">Whale<em>lana</em></span>
+        <div class="mock-nav">
+          <div class="mock-nav-dot" style="background:var(--rose);opacity:0.6"></div>
+          <div class="mock-nav-dot" style="background:rgba(200,68,90,0.2)"></div>
+          <div class="mock-nav-dot" style="background:rgba(200,68,90,0.2)"></div>
+        </div>
+      </div>
+      <div class="mock-body">
+        <div class="mock-sidebar">
+          <div class="mock-sidebar-profile"></div>
+          <div class="mock-sidebar-items">
+            <div class="mock-sidebar-item"></div>
+            <div class="mock-sidebar-item sm"></div>
+            <div class="mock-sidebar-item sm"></div>
+            <div class="mock-sidebar-item sm"></div>
+          </div>
+        </div>
+        <div class="mock-main">
+          <div class="mock-card">
+            <div class="mock-card-top"></div>
+            <div class="mock-card-body">
+              <div class="mock-name-line"></div>
+              <div class="mock-sub-line"></div>
+              <div class="mock-text-lines">
+                <div class="mock-text-line" style="width:100%"></div>
+                <div class="mock-text-line" style="width:88%"></div>
+                <div class="mock-text-line" style="width:70%"></div>
+              </div>
+              <div class="mock-chips-row">
+                <div class="mock-chip"></div>
+                <div class="mock-chip" style="width:48px"></div>
+                <div class="mock-chip" style="width:36px"></div>
+              </div>
+            </div>
+          </div>
+          <div class="mock-actions">
+            <button class="mock-btn mock-btn-nope">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <button class="mock-btn mock-btn-pump">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="mock-btn mock-btn-super">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating badges -->
+    <div class="preview-badge badge-match">
+      <div class="pb-icon" style="background:rgba(200,68,90,0.08)">
+        <svg viewBox="0 0 24 24" stroke="var(--rose)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <div class="pb-text">
+        <span class="pb-title">It's a Match!</span>
+        <span class="pb-sub">PepeMaximalist liked you</span>
+      </div>
+    </div>
+
+    <div class="preview-badge badge-price">
+      <div class="pb-icon" style="background:rgba(42,155,91,0.08)">
+        <svg viewBox="0 0 24 24" stroke="#2A9B5B"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      </div>
+      <div class="pb-text">
+        <span class="pb-title" style="color:#2A9B5B">$PEPE +44.1%</span>
+        <span class="pb-sub">Trending in your network</span>
+      </div>
+    </div>
+
+    <div class="preview-badge badge-compat">
+      <div class="pb-icon" style="background:rgba(201,169,110,0.1)">
+        <svg viewBox="0 0 24 24" stroke="var(--gold)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="pb-text">
+        <span class="pb-title">87% Compatible</span>
+        <span class="pb-sub">Same bags · Same vibes</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span class="sym">DOGE</span><span class="up">+18.4%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg><span class="sym">SHIB</span><span class="dn">−3.2%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span class="sym">PEPE</span><span class="up">+44.1%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span class="sym">BONK</span><span class="up">+12.5%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg><span class="sym">WIF</span><span class="dn">−1.9%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span class="sym">$LOVE</span><span class="up">+88.0%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span class="sym">FLOKI</span><span class="up">+7.8%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span class="sym">POPCAT</span><span class="up">+29.3%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg><span class="sym">APE</span><span class="dn">−5.5%</span></span>
+    <!-- duplicate -->
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span class="sym">DOGE</span><span class="up">+18.4%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg><span class="sym">SHIB</span><span class="dn">−3.2%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span class="sym">PEPE</span><span class="up">+44.1%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span class="sym">BONK</span><span class="up">+12.5%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg><span class="sym">WIF</span><span class="dn">−1.9%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span class="sym">$LOVE</span><span class="up">+88.0%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span class="sym">FLOKI</span><span class="up">+7.8%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span class="sym">POPCAT</span><span class="up">+29.3%</span></span>
+    <span class="ti"><svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg><span class="sym">APE</span><span class="dn">−5.5%</span></span>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="reveal">
+    <div class="section-label">
+      <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Why Whalelana
+    </div>
+    <h2 class="section-headline">Built for Degens<br>Who Want to <em>Settle Down</em></h2>
+    <p class="section-sub">Every feature is designed around what actually matters — shared conviction, compatible risk tolerance, and mutual diamond hands.</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feat-card reveal reveal-delay-1">
+      <div class="feat-icon" style="background:rgba(200,68,90,0.08)">
+        <svg viewBox="0 0 24 24" stroke="var(--rose)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <div class="feat-title">Portfolio Matching</div>
+      <div class="feat-desc">Our algorithm compares wallet composition, risk tolerance, and hodl history to surface compatible matches — not just cute profiles.</div>
+    </div>
+
+    <div class="feat-card reveal reveal-delay-2">
+      <div class="feat-icon" style="background:rgba(201,169,110,0.1)">
+        <svg viewBox="0 0 24 24" stroke="var(--gold)"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="feat-title">Live Price Feeds</div>
+      <div class="feat-desc">Every profile shows real-time token performance. See who's pumping, who's holding the bag, and who sold at the bottom.</div>
+    </div>
+
+    <div class="feat-card reveal reveal-delay-3">
+      <div class="feat-icon" style="background:rgba(122,30,48,0.07)">
+        <svg viewBox="0 0 24 24" stroke="var(--wine)"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="feat-title">Whale Verification</div>
+      <div class="feat-desc">On-chain wallet verification ensures everyone is who they say they are. No fake screenshots, no paper-hand catfishes.</div>
+    </div>
+
+    <div class="feat-card large reveal reveal-delay-1">
+      <div class="feat-visual">
+        <svg viewBox="0 0 120 80" fill="none" stroke="var(--rose)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 60 L30 35 L50 45 L70 20 L90 30 L110 10"/>
+          <circle cx="30" cy="35" r="3" fill="var(--blush)"/>
+          <circle cx="70" cy="20" r="4" fill="var(--rose)" opacity="0.6"/>
+          <circle cx="110" cy="10" r="3" fill="var(--blush)"/>
+          <path d="M10 70 L30 55 L50 60 L70 40 L90 50 L110 35" stroke="var(--gold)" stroke-width="0.8" opacity="0.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="feat-icon" style="background:rgba(200,68,90,0.07);margin-bottom:14px">
+          <svg viewBox="0 0 24 24" stroke="var(--rose)"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="feat-title">Compatibility Score</div>
+        <div class="feat-desc">A proprietary 0–100 compatibility score computed from overlapping bags, trading frequency, chain preference, average holding time, and portfolio growth trajectory. The deeper the alignment, the higher the score.</div>
+      </div>
+    </div>
+
+    <div class="feat-card reveal reveal-delay-2">
+      <div class="feat-icon" style="background:rgba(74,124,196,0.07)">
+        <svg viewBox="0 0 24 24" stroke="#4A7CC4"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div class="feat-title">Crypto Icebreakers</div>
+      <div class="feat-desc">Break the ice with curated conversation starters designed around shared holdings, market opinions, and degen philosophy.</div>
+    </div>
+
+    <div class="feat-card reveal reveal-delay-3">
+      <div class="feat-icon" style="background:rgba(200,68,90,0.07)">
+        <svg viewBox="0 0 24 24" stroke="var(--rose)"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </div>
+      <div class="feat-title">Whale Alerts</div>
+      <div class="feat-desc">Get notified when your matches make major moves — big buys, new positions, or whale-tier transactions that affect compatibility.</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="reveal">
+      <div class="section-label">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        How It Works
+      </div>
+      <h2 class="section-headline">From Wallet<br>to <em>First Date</em></h2>
+    </div>
+    <div class="how-steps">
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">01</div>
+        <div class="step-icon" style="background:rgba(200,68,90,0.08)">
+          <svg viewBox="0 0 24 24" stroke="var(--rose)"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div class="step-title">Connect Wallet</div>
+        <div class="step-desc">Link your EVM, Solana, or multi-chain wallet. We read your holdings — nothing else. No private keys, ever.</div>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">02</div>
+        <div class="step-icon" style="background:rgba(201,169,110,0.09)">
+          <svg viewBox="0 0 24 24" stroke="var(--gold)"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="step-title">Build Your Profile</div>
+        <div class="step-desc">Write a bio, set your preferences, and let your portfolio speak for itself. Your bags are your personality.</div>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">03</div>
+        <div class="step-icon" style="background:rgba(200,68,90,0.08)">
+          <svg viewBox="0 0 24 24" stroke="var(--rose)"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <div class="step-title">Discover Whales</div>
+        <div class="step-desc">Swipe through verified profiles sorted by compatibility score. Filter by chain, portfolio size, and favorite coins.</div>
+      </div>
+      <div class="step reveal reveal-delay-4">
+        <div class="step-num">04</div>
+        <div class="step-icon" style="background:rgba(122,30,48,0.07)">
+          <svg viewBox="0 0 24 24" stroke="var(--wine)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div class="step-title">Match and HODL</div>
+        <div class="step-desc">Mutual pumps unlock a match. Start chatting, share alpha, and find out if the vibe is as strong as the conviction.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-band">
+  <div class="stats-band-inner">
+    <div class="stat-item">
+      <span class="stat-num">48<em>K</em></span>
+      <span class="stat-label">Active Whale Profiles</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">2.1<em>M</em></span>
+      <span class="stat-label">Matches Made</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">$4<em>B</em></span>
+      <span class="stat-label">Combined Portfolio Value</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">94<em>%</em></span>
+      <span class="stat-label">Still Holding After 6 Months</span>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="reveal">
+    <div class="section-label">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Love Stories
+    </div>
+    <h2 class="section-headline">They Found Their<br><em>Diamond Hand</em></h2>
+  </div>
+
+  <div class="testi-grid">
+    <div class="testi-card reveal reveal-delay-1">
+      <div class="testi-stars">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="testi-text">"We matched because we both held $PEPE through the crash of 2024. That kind of shared trauma bonds people. We're getting married in April."</div>
+      <div class="testi-author">
+        <div class="testi-av" style="background:linear-gradient(135deg,#C8445A,#7A1E30)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div>
+          <div class="testi-name">CryptoRomeoXO</div>
+          <div class="testi-handle">@cryptoromeo · ETH</div>
+        </div>
+        <div class="testi-coin">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          $PEPE
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal reveal-delay-2">
+      <div class="testi-stars">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="testi-text">"I used to explain BONK to people at dinner and watch their eyes glaze over. Then I met someone on Whalelana who already understood. That was enough."</div>
+      <div class="testi-author">
+        <div class="testi-av" style="background:linear-gradient(135deg,#4A7CC4,#1A4C94)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div>
+          <div class="testi-name">BonkBride</div>
+          <div class="testi-handle">@bonkbride · SOL</div>
+        </div>
+        <div class="testi-coin">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          $BONK
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal reveal-delay-3">
+      <div class="testi-stars">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="testi-text">"She was a DOGE OG. I was a late DOGE buyer. She forgave me for not getting in at $0.003. That's how I knew she was the one."</div>
+      <div class="testi-author">
+        <div class="testi-av" style="background:linear-gradient(135deg,#C9A96E,#8B6914)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div>
+          <div class="testi-name">LateDogeGuy</div>
+          <div class="testi-handle">@latedoge · Multi</div>
+        </div>
+        <div class="testi-coin">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          $DOGE
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-box reveal">
+    <div class="cta-eyebrow">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Free to Join · No Gas Fees
+    </div>
+    <h2 class="cta-headline">Your Whale is<br><em>Waiting</em> for You</h2>
+    <p class="cta-sub">Don't let this Valentine's Day pass without finding someone who understands the pain of a rug pull and the joy of a 100x.</p>
+    <div class="cta-actions">
+      <a href="app.html" class="btn-cta">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Start Matching Now
+      </a>
+      <a href="#how" class="btn-cta-ghost">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        Learn More
+      </a>
+    </div>
+    <div class="valentines-badge">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Valentine's Day Special — 3x Boost Free for 48 Hours
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Whale<em>lana</em></div>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Twitter</a>
+    <a href="#">Discord</a>
+    <a href="#">Docs</a>
+  </div>
+  <div class="footer-copy">
+    Made with
+    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    for degens, by degens
+  </div>
+</footer>
+
+<script>
+// Petals
+(function(){
+  const c = document.getElementById('petalCanvas');
+  for(let i = 0; i < 22; i++){
+    const p = document.createElement('div');
+    p.className = 'p';
+    const s = 4 + Math.random() * 8;
+    p.style.cssText = `
+      left: ${Math.random() * 100}%;
+      width: ${s}px; height: ${s * 1.7}px;
+      animation-duration: ${8 + Math.random() * 12}s;
+      animation-delay: ${Math.random() * 15}s;
+      opacity: ${0.1 + Math.random() * 0.25};
+    `;
+    c.appendChild(p);
+  }
+})();
+
+// Nav scroll
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  if(window.scrollY > 60) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+});
+
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
